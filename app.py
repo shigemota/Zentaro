@@ -2,8 +2,11 @@ from flask import Flask, redirect
 from flask import render_template, request
 from forms import *
 from compiler import *
+import config
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = config.key
+
 
 @app.route('/')
 @app.route('/index')
