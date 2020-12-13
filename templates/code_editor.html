@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form action="{{ url_for('submit') }}" method="post">
+    <select name="language" class="select-field" onchange="this.form.submit()">
+        {% set default_value = 'C++' %}
+        {% for d in data %}
+        <option value="{{ d.name }}" {% if d.name== default_value %}selected="selected" {% endif %}>{{ d.name }}
+        </option>
+        {% endfor %}
+    </select>
+    <textarea name="text"></textarea>
+    <input type="submit">
+</form>
+{% endblock %}
