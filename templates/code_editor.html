@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Get Content of Ace Editor to Textarea</title>
+    <title>Problem & Editor</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="robots" content="noindex, nofollow">
     <meta name="googlebot" content="noindex, nofollow">
@@ -38,11 +38,8 @@
 
     <style id="compiled-css" type="text/css">
         #editor {
-            /** TODO Setting height is also important, otherwise editor wont showup**/
             height: 70vh;
         }
-
-        /* EOS */
     </style>
 
     <script id="insert"></script>
@@ -57,31 +54,30 @@
         </div>
         <div class="panel-body">
             <div class="row">
-                <dif class="col-md-6">
+                <div class="col-md-6">
                     <div class="col-md-6">
-                        <h4>Textarea</h4>
-                        <textarea class="col-md-6" name="content" id="content" rows="5" cols="70"
-                                  disabled="disabled"></textarea>
+                        <h4>Problem</h4>
                     </div>
                     <div class="row">
-                        <form>
-                            <select name="language" id="language" class="select-field">
-                                {% set default_value = 'C++' %}
-                                {% for d in data %}
-                                    <option value="{{ d.name }}"
-                                            {% if d.name== default_value %}selected="selected" {% endif %}>{{ d.name }}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                            <a href=# id=process_input>
-                                <button class='btn btn-default'>Submit</button>
-                            </a>
-                        </form>
+
                         <p id=result></p>
                     </div>
-                </dif>
-                <h4>Ace Editor</h4>
+                </div>
                 <div class="col-md-6">
+                    <div>
+                        <h4>Editor</h4>
+                        <select name="language" id="language" class="select-field">
+                            {% set default_value = 'C++' %}
+                            {% for d in data %}
+                                <option value="{{ d.name }}"
+                                        {% if d.name== default_value %}selected="selected" {% endif %}>{{ d.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <a href=# id=process_input>
+                            <button class='btn btn-default'>Submit</button>
+                        </a>
+                    </div>
                     {#                    TODO ADD DEFAULT TEMPLATE#}
                     <div id="editor"></div>
                 </div>
@@ -90,29 +86,18 @@
         </div>
     </div>
     <div class="text-center">---End of editor---</div>
-    <button class="btn btn-primary" id="toggletextarea-btn">Hide TextArea</button>
-    <button class="btn btn-default" id="alertcontent-btn">Alert Content</button>
     <br/>
     <br/>
 </div>
 
 <script type="text/javascript">//<![CDATA[
 
-
-var textarea = $('#content');
-
 var editor = ace.edit("editor");
 editor.setTheme("ace/theme/monokai");
 editor.getSession().setMode("ace/mode/c_cpp");
 
-editor.setOptions({
-    enableBasicAutocompletion: true,
-    enableSnippets: true,
-    enableLiveAutocompletion: true
-});
-
 editor.getSession().on('change', function () {
-    textarea.val(editor.getSession().getValue());
+
 });
 
 var language = $('#language');
@@ -120,25 +105,11 @@ var language = $('#language');
 language.change(function () {
     console.log(language.val());
     var selectedLanguage = language.val();
-    if (selectedLanguage == "Java") selectedLanguage = "java"
-    if (selectedLanguage == "C++") selectedLanguage = "c_cpp"
-    if (selectedLanguage == "Python") selectedLanguage = "python"
+    if (selectedLanguage === "Java") selectedLanguage = "java"
+    if (selectedLanguage === "C++") selectedLanguage = "c_cpp"
+    if (selectedLanguage === "Python") selectedLanguage = "python"
     editor.getSession().setMode("ace/mode/" + selectedLanguage);
 })
-
-textarea.val(editor.getSession().getValue());
-
-$("#toggletextarea-btn").on('click', function () {
-    textarea.toggle();
-    $(this).text(function (i, text) {
-        return text === "Show Content" ? "Hide Content" : "Show Content";
-    });
-});
-
-$("#alertcontent-btn").on('click', function () {
-    alert(textarea.val());
-});
-
 
 //]]></script>
 

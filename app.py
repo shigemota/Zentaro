@@ -23,10 +23,6 @@ def background_process():
         result = main(text, lang)
         result = result.splitlines()
         return jsonify(result=result)
-        # if lang.lower() == 'python':
-        #     return jsonify(result='You are wise')
-        # else:
-        #     return jsonify(result='Try again.')
     except Exception as e:
         return str(e)
 
