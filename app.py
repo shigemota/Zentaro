@@ -1,4 +1,4 @@
-from flask import Flask, redirect
+from flask import Flask, redirect, jsonify
 from flask import render_template, request
 from forms import *
 from compiler import *
@@ -14,20 +14,27 @@ def index():
     return '<a href="/editor">Start Coding!</a>'
 
 
+@app.route('/background_process')
+def background_process():
+    try:
+        text = request.args.get('proglang', 0, type=str)
+        lang = request.args.get('lang', 0, type=str)
+        text = text.split('\n')
+        result = main(text, lang)
+        result = result.splitlines()
+        return jsonify(result=result)
+        # if lang.lower() == 'python':
+        #     return jsonify(result='You are wise')
+        # else:
+        #     return jsonify(result='Try again.')
+    except Exception as e:
+        return str(e)
+
+
 @app.route('/editor')
 def code_editor():
     data = [{'name': 'Java'}, {'name': 'C++'}, {'name': 'Python'}]
-    return render_template('code_editor.html', title='Code Editor', data=data)
-
-
-@app.route('/submit', methods=['POST'])
-def submit():
-    language = request.form.get("language")
-    text = request.form.get("text")
-    text = text.split('\n')
-    result = main(text, language)
-    result = result.splitlines()
-    return "The result of your program is: {}{}".format('</br>', '</br>'.join(result))
+    return render_template('code_editor.html', data=data)
 
 
 @app.route('/sign_in', methods=['GET', 'POST'])  # Вход в систему
