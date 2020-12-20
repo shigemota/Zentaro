@@ -46,10 +46,13 @@
 
 
 </head>
-<body>
-<div class="container">
-    <div class="panel panel-default">
-        <div class="panel-heading">
+<body style="background-color: #000000;
+  color: white;">
+<div class="container" style="background-color: #000000; padding-top:3vh;">
+    <div class="panel panel-default" style=" border: 0 !important; background-color: #121212;
+  color: white;">
+        <div class="panel-heading" style="background-color: #1B1B1B; border: 0 !important;
+  color: white;">
             <span class="panel-title">Editor</span>
         </div>
         <div class="panel-body">
@@ -57,10 +60,27 @@
                 <div class="col-md-6">
                     <div class="col-md-6">
                         <h4>Problem</h4>
+                        <br>
+                        <br>
+                        <br>
+                        <h4>Input Format</h4>
+                        <br>
+                        <br>
+                        <br>
+                        <h4>Output Format</h4>
+                        <br>
+                        <br>
+                        <br>
+                        <h4>Sample Input</h4>
+                        <br>
+                        <br>
+                        <br>
+                        <h4>Sample Output</h4>
+
                     </div>
                     <div class="row">
 
-                        <p id=result></p>
+                        <p id=result style="white-space: pre-line;"></p>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -93,6 +113,8 @@
 <script type="text/javascript">//<![CDATA[
 
 var editor = ace.edit("editor");
+
+
 editor.setTheme("ace/theme/monokai");
 editor.getSession().setMode("ace/mode/c_cpp");
 

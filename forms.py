@@ -10,7 +10,7 @@ class SignUp(FlaskForm):
     email = EmailField('Email', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     password_repeat = PasswordField('Repeat password', validators=[DataRequired()])
-    #icon = FileField("Choose image", validators=[FileAllowed(['jpg', 'png'], "Image")])
+    # icon = FileField("Choose image", validators=[FileAllowed(['jpg', 'png'], "Image")])
     submit = SubmitField('Submit')
 
 

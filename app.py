@@ -1,7 +1,8 @@
 from flask import Flask, redirect, jsonify
 from flask import render_template, request
+
+from compiler import compile_text
 from forms import *
-from compiler import *
 import config
 
 app = Flask(__name__)
@@ -16,15 +17,10 @@ def index():
 
 @app.route('/background_process')
 def background_process():
-    try:
-        text = request.args.get('proglang', 0, type=str)
-        lang = request.args.get('lang', 0, type=str)
-        text = text.split('\n')
-        result = main(text, lang)
-        result = result.splitlines()
-        return jsonify(result=result)
-    except Exception as e:
-        return str(e)
+    text = request.args.get('proglang', 0, type=str)
+    lang = request.args.get('lang', 0, type=str)
+    result = compile_text(text, lang)
+    return jsonify(result=result)
 
 
 @app.route('/editor')
@@ -55,4 +51,4 @@ def success():
 
 
 if __name__ == '__main__':
-    app.run(port=8080, host='127.0.0.1')
+    app.run(port=5000, host='0.0.0.0')
