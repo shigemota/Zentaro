@@ -12,6 +12,9 @@ PROFILES = {
         'read_only': True,
         'network_disabled': False,
     },
+    'java11': {
+        'docker_image': 'stepik/epicbox-java:11.0.1',
+    },
     'python': {
         'docker_image': 'python:3.6.5-alpine',
     }
@@ -24,24 +27,24 @@ def execute_cpp(code):
         epicbox.run('gcc_compile', 'g++ -pipe -O2 -static -o main main.cpp',
                     files=[{'name': 'main.cpp', 'content': code}],
                     workdir=workdir)
-        print(epicbox.run('gcc_run', './main', stdin='2 2',
-                          limits={'cputime': 1, 'memory': 64},
-                          workdir=workdir))
-        # {'exit_code': 0, 'stdout': b'4\n', 'stderr': b'', 'duration': 0.095318, 'timeout': False, 'oom_killed': False}
 
-        result = (epicbox.run('gcc_run', './main', stdin='14 5',
-                              limits={'cputime': 1, 'memory': 64},
+        result = (epicbox.run('gcc_run', './main',
+                              limits={'cputime': 2, 'memory': 64},
                               workdir=workdir))
     return result
 
 
-def execute_java(code):
-    return "TODO ADD JAVA"
+def execute_java(code, name_of_class):
+    files = [{'name': f'{name_of_class}.java', 'content': code}]
+    limits = {'cputime': 2, 'memory': 64}
+    result = epicbox.run('java11', f'javac {name_of_class}.java; java {name_of_class}', files=files,
+                         limits=limits)
+    return result
 
 
 def execute_python(code):
     files = [{'name': 'main.py', 'content': code}]
-    limits = {'cputime': 1, 'memory': 64}
+    limits = {'cputime': 2, 'memory': 64}
     result = epicbox.run('python', 'python3 main.py', files=files, limits=limits)
     return result
 
@@ -52,33 +55,25 @@ def format_result(response):
     stderr = response['stderr'].decode('utf-8')  # String
     duration = response['duration']  # Float
     timeout = response['timeout']  # Boolean
+    oom_killed = response['oom_killed']  # Boolean
 
-    result = 'Stdout: ' + stdout + '\n' + 'Duration: ' + str(duration) + '\n' + 'Timeout: ' + str(timeout) + '\n'
+    result = 'exit_code: ' + str(
+        exit_code) + '\n' + 'stdout: ' + stdout + '\n' + 'stderr: ' + stderr + '\n' + 'duration: ' + str(
+        duration) + '\n' + 'timeout: ' + str(timeout) + '\n' + 'oom_killed: ' + str(oom_killed) + '\n'
     return result
 
 
 def compile_text(text, language):
-    text = text.encode('UTF-8')
+    code = text.encode('UTF-8')
     response = ''
     if language == 'C++':
-        response = execute_cpp(text)
+        response = execute_cpp(code)
     elif language == 'Java':
-        response = execute_java(text)
+        text = text.split()
+        name_of_class = text[text.index('class') + 1].replace('{', '')
+        response = execute_java(code, name_of_class)
     elif language == 'Python':
-        response = execute_python(text)
-    print(response)
+        response = execute_python(code)
 
     result = format_result(response)
-    print(result)
     return result
-
-# if __name__ == "__main__":
-#     (compile_text('''
-# #include<iostream>
-# using namespace std;
-# int main(){
-#     int a,b;
-#     cin >> a >> b;
-#     cout << a + b << endl;
-# }
-# ''', 'C++'))
