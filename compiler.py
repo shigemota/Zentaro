@@ -140,11 +140,13 @@ def format_result(response):
     return result
 
 
-def compile_text(text, language, input_values=None, limits=None):
+def compile_text(text, language, input_values=None, limits=None, output_values=None):
     if limits is None:
         limits = {"cputime": 2, "memory": 64}
     if input_values is None:
         input_values = [""]
+    if output_values is None:
+        output_values = [""]
 
     untrusted_code = text.encode("UTF-8")
     response = ""
@@ -156,8 +158,15 @@ def compile_text(text, language, input_values=None, limits=None):
         response = execute_python(untrusted_code, input_values, limits)
 
     result = ""
-    for res in response:
+    for index, res in enumerate(response):
+
+        out = output_values[index]
+        inp = format_result(res)
+
+        compare_output = (inp == out)
+
         result += (
-                "Output #" + str(response.index(res) + 1) + ": " + format_result(res) + "\n"
+                "Output #" + str(index + 1) + " - " + str(compare_output) + '\n' + format_result(res) + "\n"
         )
+
     return result

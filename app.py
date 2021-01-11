@@ -19,7 +19,7 @@ def index():
 def background_process():
     text = request.args.get('proglang', 0, type=str)
     lang = request.args.get('lang', 0, type=str)
-    result = compile_text(text, lang)
+    result = compile_text(text=text, language=lang, input_values=["2 3", "190 23"], output_values=["5\n", "213\n"])
     return jsonify(result=result)
 
 
