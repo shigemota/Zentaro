@@ -1,6 +1,7 @@
 Flask
-pony
 requests
 jsonify
-Flask-WTF
-epicbox
+dockerjudge
+flake8
+black
+docker

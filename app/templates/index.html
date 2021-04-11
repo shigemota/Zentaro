@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+  <link rel="stylesheet" href="../static/css/style.css">
+  <title>Zentaro</title>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+  <script>
+    function onRunClick() {
+
+      var editor = ace.edit("editor");
+      var language = document.getElementById("language");
+      $.getJSON('/background_process', {
+        proglang: editor.getSession().getValue(),
+        lang: language.value,
+        problem: 2, //TODO Add problem
+        limits: 1, //TODO Add Limits
+      }, function (data) {
+        alert(data.result);
+      });
+      return false;
+    };
+
+    function onSelectClick() {
+      var editor = ace.edit("editor");
+      var language = document.getElementById("language");
+      var selectedLanguage = language.value;
+      if (selectedLanguage === "Java") selectedLanguage = "java"
+      if (selectedLanguage === "C++") selectedLanguage = "c_cpp"
+      if (selectedLanguage === "Python 3") selectedLanguage = "python"
+      editor.getSession().setMode("ace/mode/" + selectedLanguage);
+    };
+  </script>
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-2.0.2.js"></script>
+
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.01/ace.js"></script>
+
+</head>
+
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img src="../static/images/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
+          Zentaro
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Practice</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Pricing</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="">
+    <div class="workspace">
+      <div class="workspace__problem">
+        <p class="heading">Write the function solveMeFirst to compute the sum of two integers.</p>
+        <p class="text">Just sum A+B</p>
+        <p class="heading">Sample Input</p>
+        <div class="sample">
+          <p>2</p>
+          <p>3</p>
+        </div>
+        <p class="heading">Sample Output</p>
+        <div class="sample">
+          <p>5</p>
+        </div>
+        <p class="heading">Explanation</p>
+        <p class="text">2+3=5.</p>
+      </div>
+      <div class="workspace__problem">
+        <p class="text">Editor</p>
+        <div id="editor" style="height:600px;border:1px solid grey"></div>
+        <script type="text/javascript">//<![CDATA[
+
+          var editor = ace.edit("editor");
+
+
+          editor.setTheme("ace/theme/monokai");
+          editor.getSession().setMode("ace/mode/c_cpp");
+
+          editor.getSession().on('change', function () {
+
+          });
+
+          var language = $('#language');
+
+
+        //]]></script>
+        <div class="but">
+          <div>
+            <div class="dropdown">
+              <select class="btn btn-secondary dropdown-toggle" type="button" name="language" id="language"
+                onchange="onSelectClick()" aria-expanded="false" class="select-field">
+                {% set default_value = 'C++' %}
+                {% for d in data %}
+                <option value="{{ d.name }}" {% if d.name==default_value %}selected="selected" {% endif %}>{{ d.name }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div>
+            <button type="button" id=process_input onclick="onRunClick()" class="btn btn-outline-light">Run
+              code</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
