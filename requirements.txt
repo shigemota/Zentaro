@@ -5,3 +5,4 @@ dockerjudge
 flake8
 black
 docker
+pymongo

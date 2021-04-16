@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from flask import render_template, request
 from compiler.compiler import compile_code
+from database.db import *
 
 app = Flask(__name__)
 
@@ -9,18 +10,21 @@ app = Flask(__name__)
 def background_process():
     text = (request.args.get("proglang", 0, type=str)).encode("UTF-8")
     lang = request.args.get("lang", 0, type=str)
-    problem = request.args.get("problem", 0, type=int)
+    problem = request.args.get("problem", 0, type=str)
 
-    problems = {
-        1: [(b"2 3", b"5"), (b"190 23", b"213")],
-        2: [(b"2 3", b"5"), (b"190 23", b"213")],
-    }
+    problem_data = get_from_problems_db(problem)
+    problem_limit = float(problem_data['limits']['time'])
+    problem_tests = problem_data['tests']
+    limits = {"limit": {"time": problem_limit}}
 
-    limit = request.args.get("limits", 0, type=float)
-    limits = {"limit": {"time": limit}}
+    problem = []
+    for i in range(len(problem_tests)):
+        inp_out = problem_tests[i]
+        for j in range(len(inp_out)):
+            inp_out[j] = inp_out[j].encode("UTF-8")
+        problem.append(tuple(inp_out))
 
-    result = compile_code(text, lang, problems[problem], limits)
-    print("Finished Compiling")
+    result = compile_code(text, lang, problem, limits)
     return jsonify(result=str(result))
 
 

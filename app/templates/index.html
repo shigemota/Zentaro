@@ -22,8 +22,7 @@
       $.getJSON('/background_process', {
         proglang: editor.getSession().getValue(),
         lang: language.value,
-        problem: 2, //TODO Add problem
-        limits: 1, //TODO Add Limits
+        problem: "A001", //TODO Add problem
       }, function (data) {
         alert(data.result);
       });

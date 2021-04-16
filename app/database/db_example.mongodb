@@ -1,0 +1,77 @@
+// MongoDB Playground
+// To disable this template go to Settings | MongoDB | Use Default Template For Playground.
+// Make sure you are connected to enable completions and to be able to run a playground.
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+
+// Select the database to use.
+use('zentaro');
+
+// The drop() command destroys all data from a collection.
+// Make sure you run it against the correct database and collection.
+db.problems.drop();
+
+// Insert a few documents into the problems collection.
+db.problems.insertMany([
+
+    {
+        "_id": 1,
+        "number": "A001",
+        "title": "Sum A + B",
+        "description": "Write a programm to sum a and b",
+        "tests": [
+            ["1 2", "3"],
+            ["3 4", "7"],
+            ["100 200", "300"]
+        ],
+        "limits": {
+            "time": 1.0,
+            "memory": 256.0
+        },
+        "date": "2014-03-01T09:00:00.000Z"
+    },
+    {
+        "_id": 2,
+        "number": "A002",
+        "title": "Divide A and B",
+        "description": "Write a programm to divide a and b",
+        "tests": [
+            ["10 5", "2"],
+            ["1 2", "0.5"],
+            ["1 0", "Error"]
+        ],
+        "limits": {
+            "time": 1.0,
+            "memory": 256.0
+        },
+        "date": "2014-03-01T09:00:00.000Z"
+    },
+    {
+        "_id": 3,
+        "number": "A003",
+        "title": "Hello World",
+        "description": "Write a programm to print 'Hello World'",
+        "tests": [
+            ["", "Hello World!"]
+        ],
+        "limits": {
+            "time": 1.0,
+            "memory": 256.0
+        },
+        "date": "2014-03-01T09:00:00.000Z"
+    }
+]);
+
+// Run a find command to view items sold on April 4th, 2014.
+
+// db.problems.find({ date: { $gte: new Date('2014-04-04'), $lt: new Date('2014-04-05') } });
+
+// Build an aggregation to view total problems for each product in 2014.
+// const aggregation = [
+//   { $match: { date: { $gte: new Date('2014-01-01'), $lt: new Date('2015-01-01') } } },
+//   { $group: { _id: '$item', totalSaleAmount: { $sum: { $multiply: [ '$price', '$quantity' ] } } } }
+// ];
+
+// Run the aggregation and open a cursor to the results.
+// Use toArray() to exhaust the cursor to return the whole result set.
+// You can use hasNext()/next() to iterate through the cursor page by page.
+// db.problems.aggregate(aggregation);
